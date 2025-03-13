@@ -1,10 +1,3 @@
-# AI-Powered-Resume-Screening-and-Ranking-System
-An AI-driven tool that automates resume screening using TF-IDF, Cosine Similarity, and NLP. It ranks resumes based on job descriptions, detects duplicates, extracts contact info, and provides visual insights. Built with Python, Streamlit, and Scikit-learn.
-
-### **How to Use This?**  
-1. Replace `"your-username"` in the GitHub link with your actual GitHub username.  
-2. Rename `"app.py"` if your file has a different name.  
-3. Update the **Future Improvements** section based on what you plan to add.  
 # AI-Powered Resume Screening & Ranking System  
 
 An AI-driven web application that automates the process of **resume screening and ranking** based on job descriptions. The system extracts **text from PDFs**, applies **Natural Language Processing (NLP) techniques**, and ranks resumes using **TF-IDF vectorization and cosine similarity**.  
@@ -28,10 +21,34 @@ An AI-driven web application that automates the process of **resume screening an
 - **Seaborn & Matplotlib** – Data visualization  
 - **JSON** – Storing user feedback  
 
-## 📂 Project Structure  
-📁 ai_resume_screening
-┣ 📜 app.py # Main Streamlit application
-┣ 📜 requirements.txt # Dependencies list
-┣ 📜 feedback.json # Stores collected user feedback
-┣ 📁 sample_resumes # Folder for testing resumes
-┗ 📜 README.md # Project documentation
+## 📌 Usage Instructions  
+1. **Enter the job description** in the provided text box.  
+2. **Upload multiple resumes** (PDF format) – Maximum **10 resumes per batch**.  
+3. The system **analyzes resumes**, extracts relevant details, and **ranks them** based on job description similarity.  
+4. **View results** – including **scores, rank categories, experience levels, and visualizations**.  
+5. **Download the ranked resume list** as a **CSV file**.  
+6. **Submit feedback** about the system, which is stored in `feedback.json`.  
+
+## 🔍 Sample Job Description & Keywords  
+
+### **Job Title:** Data Scientist  
+
+#### **Job Description:**  
+We are looking for a **Data Scientist** with experience in **machine learning, data analysis, and predictive modeling**. The ideal candidate should have strong programming skills in **Python or R**, experience working with large datasets, and knowledge of deep learning frameworks such as **TensorFlow or PyTorch**. The role involves developing AI-driven models, optimizing data pipelines, and collaborating with cross-functional teams to drive data-driven decision-making.  
+
+#### **Keywords:**  
+- Machine Learning  
+- Data Analysis  
+- Python  
+- R  
+- TensorFlow  
+- PyTorch  
+- Big Data  
+- Statistical Analysis  
+- NLP  
+- Feature Engineering  
+
+---
+
+## 📜 License  
+This project is licensed under the **MIT License** – you are free to use and modify it.  
