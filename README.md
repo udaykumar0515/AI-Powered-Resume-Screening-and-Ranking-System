@@ -48,7 +48,5 @@ We are looking for a **Data Scientist** with experience in **machine learning, d
 - NLP  
 - Feature Engineering  
 
----
-
 ## 📜 License  
 This project is licensed under the **MIT License** – you are free to use and modify it.  
