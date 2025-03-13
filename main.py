@@ -21,12 +21,10 @@ def extract_contact_info(text):
     return {"Email": email, "Phone": phone}
 
 def extract_experience(text):
-    # Match variations like "2 years", "5+ yrs", "experience of 3 years"
     match = re.search(r"(\d+\+?)\s*(years?|yrs?)|experience\s+of\s+(\d+)\s*(years?|yrs?)", text, re.IGNORECASE)
     if match:
-        # Extract the first or third group and remove any non-numeric characters (like '+')
         years_str = (match.group(1) or match.group(3)).replace("+", "")
-        years = int(years_str)  # Convert to integer
+        years = int(years_str)
         if years < 2:
             return "Entry-level"
         elif 2 <= years <= 5:
@@ -95,7 +93,6 @@ def rank_resumes(job_description, resumes):
     resume_vectors = vectors[1:]
     cosine_similarities = cosine_similarity([job_description_vector], resume_vectors).flatten()
 
-    # Apply experience-based weighting
     experience_weights = {
         "Entry-level": 1.0,
         "Mid-level": 1.2,
@@ -116,55 +113,43 @@ def save_feedback(name, email, feedback):
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Current time
     }
 
-    # Load existing feedback or create a new list
     try:
         with open("feedback.json", "r") as file:
             feedback_list = json.load(file)
     except FileNotFoundError:
         feedback_list = []
 
-    # Append new feedback
     feedback_list.append(feedback_data)
 
-    # Save updated feedback list to JSON file
     with open("feedback.json", "w") as file:
         json.dump(feedback_list, file, indent=4)
 
-# Streamlit app
 st.title("AI Resume Screening & Candidate Ranking System")
 
-# Job description input
 st.header("Job Description")
 job_description = st.text_area("Enter the job description")
 
-# Job title input
 job_title = st.text_input("Enter the job title")
 st.write(f"Job Title: {job_title}")
 
-# Keywords input
 skills_keywords = st.text_input("Enter specific skills or keywords (comma-separated)")
 keywords_list = [kw.strip() for kw in skills_keywords.split(",")] if skills_keywords else []
 
-# File uploader
 st.header("Upload Resumes")
 uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
 
-# Check file size
 if uploaded_files:
     for file in uploaded_files:
         if file.size > MAX_FILE_SIZE:
             st.error(f"File {file.name} exceeds the 2MB size limit. Please upload a smaller file.")
-            uploaded_files = []  # Clear the list to prevent processing
+            uploaded_files = [] 
             break
 
-# Check upload limit
 if uploaded_files and len(uploaded_files) > 10:
     st.error("You can upload a maximum of 10 resumes at once.")
 
-# Progress bar
 progress_bar = st.progress(0)
 
-# Process resumes
 if uploaded_files and job_description:
     st.header("Ranking Resumes")
     resumes = []
@@ -173,39 +158,32 @@ if uploaded_files and job_description:
         resumes.append(text)
         progress_bar.progress((i + 1) / len(uploaded_files))
 
-    # Rank resumes
     start_time = time.time()
     scores = np.round(rank_resumes(job_description, resumes) * 100, 2)
     end_time = time.time()
     ranking_time = end_time - start_time
 
-    # Extract contact info
     contact_info = [extract_contact_info(text) for text in resumes]
 
-    # Create DataFrame
     results = pd.DataFrame({
         "Resume": [file.name for file in uploaded_files],
-        "Score": scores,  # Scores are already floats
+        "Score": scores, 
         "Rank": [get_rank_label(score) for score in scores],
         "Resume Length Feedback": [check_resume_length(text) for text in resumes],
         "Email": [info["Email"] for info in contact_info],
         "Phone": [info["Phone"] for info in contact_info],
     })
 
-    # Add explanation column
     results["Explanation"] = [
         get_score_explanation(score, keywords_list, resumes[i])
         for i, score in enumerate(results["Score"])
     ]
     results["Experience Level"] = [extract_experience(text) for text in resumes]
 
-    # Sort results
     results = results.sort_values(by="Score", ascending=False)
 
-    # Display ranking time
     st.write(f"Ranking completed in {ranking_time:.2f} seconds")
 
-    # Filter by experience level
     experience_level = st.selectbox("Filter by experience level", ["All", "Entry-level", "Mid-level", "Senior"])
     if experience_level != "All":
         filtered_results = results[results["Experience Level"] == experience_level]
@@ -213,12 +191,10 @@ if uploaded_files and job_description:
     else:
         st.write(results)
 
-    # Display top 3 resumes
     st.header("Top 3 Resumes")
     top_3 = results.head(3)
     st.write(top_3)
 
-    # Visualize scores using Seaborn
     st.header("Resume Scores Visualization")
     sorted_results = results.sort_values(by="Score", ascending=True)
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -231,24 +207,21 @@ if uploaded_files and job_description:
         ax.bar_label(i, fmt='%.1f%%', label_type="edge", fontsize=10)
     st.pyplot(fig)
 
-    # Check for duplicates
     duplicates = check_duplicates(resumes)
     if duplicates:
         st.write("Duplicate Resumes:", duplicates)
     else:
         st.write("No duplicate resumes found.")
 
-    # Download results
     csv = results.to_csv(index=False)
     st.download_button("Download Results", csv, file_name="ranked_resumes.csv", mime="text/csv")
 
-    # Feedback section
     st.header("Feedback")
     name = st.text_input("Enter your name")
     email = st.text_input("Enter your email")
     feedback = st.text_area("Provide feedback or suggestions")
     if st.button("Submit Feedback"):
-        if name and email and feedback:  # Ensure all fields are filled
+        if name and email and feedback: 
             save_feedback(name, email, feedback)
             st.success("Thank you for your feedback!")
         else:
