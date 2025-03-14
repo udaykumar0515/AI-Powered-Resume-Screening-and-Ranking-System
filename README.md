@@ -46,7 +46,22 @@ We are looking for a **Data Scientist** with experience in **machine learning, d
 - Big Data  
 - Statistical Analysis  
 - NLP  
-- Feature Engineering  
+- Feature Engineering
+- 
+## 📸 Implementation Snapshots  
+
+### 1️⃣ System Interface - Resume Upload  
+![Resume Upload](images/resume_upload.png)  
+
+### 2️⃣ Resume Ranking Output  
+![Resume Ranking](images/resume_ranking.png)  
+
+### 3️⃣ Score Visualization  
+![Score Visualization](images/score_visualization.png)  
+
+### 4️⃣ Feedback Submission  
+![Feedback Submission](images/feedback_submission.png)  
 
 ## 📜 License  
 This project is licensed under the **MIT License** – you are free to use and modify it.  
+
